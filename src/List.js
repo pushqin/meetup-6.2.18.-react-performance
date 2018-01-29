@@ -1,16 +1,17 @@
 import React from 'react';
 import ListItem from "./ListItem";
 
-class List extends React.Component{
+class List extends React.PureComponent{
     
     render(){
         return(
             <div style={{  'display': 'grid',
-                'grid-template-columns': 'repeat(20, 1fr)',
-                'grid-gap': '10px',
-                'grid-auto-rows': 'minmax(100px, 100px)'}}>
+                'gridTemplateColumns': 'repeat(20, 1fr)',
+                'gridGap': '10px',
+                'gridAutoRows': 'minmax(100px, 100px)'}}>
+                {console.log("Render List")}
                 {this.props.stringArray.map(value=>{
-                    return <ListItem value={value}/>
+                    return <ListItem key={value} value={value}/>
                 })}
            </div>
         )

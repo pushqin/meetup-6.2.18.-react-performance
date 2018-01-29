@@ -2,14 +2,14 @@
 import React from 'react';
 import Logger from './src/Logger';
 import Main from './src/Main';
-
+import {consoleMonkey} from './utils'
 
 
 class App extends React.Component {
     
-    componentWillMount(){
-      
+    componentDidMount(){
         console.log("componentWillMount");
+        consoleMonkey();
     }
     
     componentWillReceiveProps(){
@@ -24,8 +24,10 @@ class App extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Main style={{color:'black'}}></Main>
-                <Logger rerender={12} ></Logger>
+                {console.log("Render App")}
+                <Main style={{color:'black',display: 'inline-block',width: '75%'}}></Main>
+                <Logger></Logger>
+                
             </React.Fragment>
         );
     }

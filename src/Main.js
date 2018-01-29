@@ -1,33 +1,40 @@
 import React from 'react';
 import List from "./List";
-import {generateStringArray,listLength} from './../utils';
+import {generateStringArray,listLength,startTimer,endTimer,clearConsole} from './../utils';
+
 
 class Main extends React.Component{
     
     constructor(props) {
         super(props);
         this.state = {
-            stringArray: []
+            stringArray: [],
+            currentLength:listLength
         };
+        this.buttonClick = this.buttonClick.bind(this);
     }
     
     componentWillMount(){
         this.setState({
             stringArray: generateStringArray(listLength),
-            currentLength:listLength
         });
         console.log("componentWillMount");
     }
     
+    componentDidUpdate() {
+        endTimer('main')
+    }
+    
     buttonClick(where){
+    
+        startTimer('main')
         
         switch (where){
-            case 'f':
+            case 'delete-first':
                 this.setState({stringArray : this.state.stringArray.slice(1,this.state.stringArray.length),
                     currentLength:this.state.currentLength--});
-              
                 break;
-            case 'm':
+            case 'delete-middle':
                 this.setState({stringArray : (()=>{
                         this.state.stringArray.splice(parseInt(this.state.stringArray.length/2),1);
                         return this.state.stringArray;
@@ -36,11 +43,20 @@ class Main extends React.Component{
                 });
                 console.log(`Index ${parseInt(this.state.stringArray.length/2)} deleted`)
                 break;
-            case 'l':
+            case 'delete-last':
                 this.setState({stringArray : this.state.stringArray.slice(0,this.state.stringArray.length-1),
                     currentLength:this.state.currentLength--});
                 break;
-            case 'rr':
+          
+            case 'add-first':
+                this.setState({stringArray : (()=>{
+                    this.state.stringArray.unshift(123123);
+                    return this.state.stringArray;
+                })(),
+                    currentLength:this.state.currentLength++
+                });
+                break;
+            case 'reload':
                 this.setState({stringArray : generateStringArray(listLength) ,
                     currentLength:listLength});
                 break;
@@ -49,22 +65,30 @@ class Main extends React.Component{
         console.log("click");
     }
     
+    renderButton(key,text){
+      return  (<button onClick={()=>this.buttonClick(key)}>
+                  {text}
+                  {console.log(`Button ${text} Render`)}
+        </button>)
+    }
+    
     render(){
         return(
-            <div>
+            <div  style={{color:'black',display: 'inline-block',width: '75%'}}>
+                {console.log("Render Main")}
                 <div style={{paddingBottom:'20px'}}>
-                    <button onClick={()=>this.buttonClick('f')}>
-                        Delete Left
+                    {this.renderButton('delete-first',  'Delete first')}
+                    {this.renderButton('delete-middle',  'Delete middle')}
+                    {this.renderButton('delete-last',  'Delete last')}
+                    {this.renderButton('add-first',  'Add first')}
+                    {this.renderButton('add-middle',  'Add middle')}
+                    {this.renderButton('add-last',  'Add last')}
+                    {this.renderButton('reload',  'reload')}
+                    
+                    <button onClick={()=>clearConsole()}>
+                        Clear Console
                     </button>
-                    <button onClick={()=>this.buttonClick('m')}>
-                        Delete Middle
-                    </button>
-                    <button onClick={()=>this.buttonClick('l')}>
-                        Delete Right
-                    </button>
-                    <button onClick={()=>this.buttonClick('rr')}>
-                        Reset
-                    </button>
+    
                 </div>
                 <List stringArray = {this.state.stringArray}/>
             </div>

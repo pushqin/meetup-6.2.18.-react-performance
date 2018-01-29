@@ -6,7 +6,7 @@ class Logger extends React.Component {
     render(){
         return(
             <React.Fragment >
-                <div style={{float:'right',width:'20%'}} > rerenders : {this.props.rerender}</div>
+                <div id='log' style={{float:'right',width:'20%',overflow:'scroll',height:'600px'}} ></div>
             </React.Fragment>
             )
     }
